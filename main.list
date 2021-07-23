@@ -1,0 +1,421 @@
+
+main.elf:     formato del fichero elf64-littleaarch64
+
+
+Desensamblado de la sección .text:
+
+0000000040080000 <main-0x14>:
+    40080000:	58001c01 	ldr	x1, 40080380 <_stack_ptr>
+    40080004:	9100003f 	mov	sp, x1
+    40080008:	aa1f03e0 	mov	x0, xzr
+    4008000c:	aa1f03e4 	mov	x4, xzr
+    40080010:	58001580 	ldr	x0, 400802c0 <perdiste+0x34>
+
+0000000040080014 <main>:
+    40080014:	d2800409 	mov	x9, #0x20                  	// #32
+    40080018:	94000003 	bl	40080024 <busca>
+    4008001c:	14000024 	b	400800ac <p0>
+
+0000000040080020 <loop>:
+    40080020:	14000000 	b	40080020 <loop>
+
+0000000040080024 <busca>:
+    40080024:	aa0003e5 	mov	x5, x0
+    40080028:	d2800002 	mov	x2, #0x0                   	// #0
+
+000000004008002c <for>:
+    4008002c:	8b020005 	add	x5, x0, x2
+    40080030:	384000ac 	ldurb	w12, [x5]
+    40080034:	7101619f 	cmp	w12, #0x58
+    40080038:	54000041 	b.ne	40080040 <skip>  // b.any
+    4008003c:	d61f03c0 	br	x30
+
+0000000040080040 <skip>:
+    40080040:	91000442 	add	x2, x2, #0x1
+    40080044:	17fffffa 	b	4008002c <for>
+
+0000000040080048 <arriba>:
+    40080048:	381f00ac 	sturb	w12, [x5, #-16]
+    4008004c:	380000a9 	sturb	w9, [x5]
+    40080050:	d61f03c0 	br	x30
+
+0000000040080054 <abajo>:
+    40080054:	380100ac 	sturb	w12, [x5, #16]
+    40080058:	380000a9 	sturb	w9, [x5]
+    4008005c:	d61f03c0 	br	x30
+
+0000000040080060 <derecha>:
+    40080060:	380010ac 	sturb	w12, [x5, #1]
+    40080064:	380000a9 	sturb	w9, [x5]
+    40080068:	d61f03c0 	br	x30
+
+000000004008006c <izquierda>:
+    4008006c:	381ff0ac 	sturb	w12, [x5, #-1]
+    40080070:	380000a9 	sturb	w9, [x5]
+    40080074:	d61f03c0 	br	x30
+
+0000000040080078 <ganaste>:
+    40080078:	58001284 	ldr	x4, 400802c8 <perdiste+0x3c>
+    4008007c:	aa0403e6 	mov	x6, x4
+    40080080:	f2e428aa 	movk	x10, #0x2145, lsl #48
+    40080084:	f2ca8a6a 	movk	x10, #0x5453, lsl #32
+    40080088:	f2a829ca 	movk	x10, #0x414e, lsl #16
+    4008008c:	f28828ea 	movk	x10, #0x4147
+    40080090:	f80000ca 	stur	x10, [x6]
+    40080094:	f2e4040a 	movk	x10, #0x2020, lsl #48
+    40080098:	f2c4040a 	movk	x10, #0x2020, lsl #32
+    4008009c:	f2a525aa 	movk	x10, #0x292d, lsl #16
+    400800a0:	f288440a 	movk	x10, #0x4220
+    400800a4:	f80080ca 	stur	x10, [x6, #8]
+    400800a8:	17ffffde 	b	40080020 <loop>
+
+00000000400800ac <p0>:
+    400800ac:	385ff0a7 	ldurb	w7, [x5, #-1]
+    400800b0:	71008cff 	cmp	w7, #0x23
+    400800b4:	54fffe20 	b.eq	40080078 <ganaste>  // b.none
+    400800b8:	710080ff 	cmp	w7, #0x20
+    400800bc:	540002e0 	b.eq	40080118 <left0>  // b.none
+    400800c0:	385f00a7 	ldurb	w7, [x5, #-16]
+    400800c4:	71008cff 	cmp	w7, #0x23
+    400800c8:	54fffd80 	b.eq	40080078 <ganaste>  // b.none
+    400800cc:	710080ff 	cmp	w7, #0x20
+    400800d0:	540001e0 	b.eq	4008010c <up0>  // b.none
+    400800d4:	384010a7 	ldurb	w7, [x5, #1]
+    400800d8:	71008cff 	cmp	w7, #0x23
+    400800dc:	54fffce0 	b.eq	40080078 <ganaste>  // b.none
+    400800e0:	710080ff 	cmp	w7, #0x20
+    400800e4:	540000e0 	b.eq	40080100 <right0>  // b.none
+    400800e8:	384100a7 	ldurb	w7, [x5, #16]
+    400800ec:	71008cff 	cmp	w7, #0x23
+    400800f0:	54fffc40 	b.eq	40080078 <ganaste>  // b.none
+    400800f4:	97ffffd8 	bl	40080054 <abajo>
+    400800f8:	97ffffcb 	bl	40080024 <busca>
+    400800fc:	14000028 	b	4008019c <p2>
+
+0000000040080100 <right0>:
+    40080100:	97ffffd8 	bl	40080060 <derecha>
+    40080104:	97ffffc8 	bl	40080024 <busca>
+    40080108:	14000043 	b	40080214 <p3>
+
+000000004008010c <up0>:
+    4008010c:	97ffffcf 	bl	40080048 <arriba>
+    40080110:	97ffffc5 	bl	40080024 <busca>
+    40080114:	17ffffe6 	b	400800ac <p0>
+
+0000000040080118 <left0>:
+    40080118:	97ffffd5 	bl	4008006c <izquierda>
+    4008011c:	97ffffc2 	bl	40080024 <busca>
+    40080120:	14000001 	b	40080124 <p1>
+
+0000000040080124 <p1>:
+    40080124:	384100a7 	ldurb	w7, [x5, #16]
+    40080128:	71008cff 	cmp	w7, #0x23
+    4008012c:	54fffa60 	b.eq	40080078 <ganaste>  // b.none
+    40080130:	710080ff 	cmp	w7, #0x20
+    40080134:	54000220 	b.eq	40080178 <down1>  // b.none
+    40080138:	385ff0a7 	ldurb	w7, [x5, #-1]
+    4008013c:	71008cff 	cmp	w7, #0x23
+    40080140:	54fff9c0 	b.eq	40080078 <ganaste>  // b.none
+    40080144:	710080ff 	cmp	w7, #0x20
+    40080148:	54000240 	b.eq	40080190 <left1>  // b.none
+    4008014c:	385f00a7 	ldurb	w7, [x5, #-16]
+    40080150:	71008cff 	cmp	w7, #0x23
+    40080154:	54fff920 	b.eq	40080078 <ganaste>  // b.none
+    40080158:	710080ff 	cmp	w7, #0x20
+    4008015c:	54000140 	b.eq	40080184 <up1>  // b.none
+    40080160:	384010a7 	ldurb	w7, [x5, #1]
+    40080164:	71008cff 	cmp	w7, #0x23
+    40080168:	54fff880 	b.eq	40080078 <ganaste>  // b.none
+    4008016c:	97ffffbd 	bl	40080060 <derecha>
+    40080170:	97ffffad 	bl	40080024 <busca>
+    40080174:	14000028 	b	40080214 <p3>
+
+0000000040080178 <down1>:
+    40080178:	97ffffb7 	bl	40080054 <abajo>
+    4008017c:	97ffffaa 	bl	40080024 <busca>
+    40080180:	14000007 	b	4008019c <p2>
+
+0000000040080184 <up1>:
+    40080184:	97ffffb1 	bl	40080048 <arriba>
+    40080188:	97ffffa7 	bl	40080024 <busca>
+    4008018c:	17ffffc8 	b	400800ac <p0>
+
+0000000040080190 <left1>:
+    40080190:	97ffffb7 	bl	4008006c <izquierda>
+    40080194:	97ffffa4 	bl	40080024 <busca>
+    40080198:	17ffffe3 	b	40080124 <p1>
+
+000000004008019c <p2>:
+    4008019c:	384010a7 	ldurb	w7, [x5, #1]
+    400801a0:	71008cff 	cmp	w7, #0x23
+    400801a4:	54fff6a0 	b.eq	40080078 <ganaste>  // b.none
+    400801a8:	710080ff 	cmp	w7, #0x20
+    400801ac:	54000280 	b.eq	400801fc <right2>  // b.none
+    400801b0:	384100a7 	ldurb	w7, [x5, #16]
+    400801b4:	71008cff 	cmp	w7, #0x23
+    400801b8:	54fff600 	b.eq	40080078 <ganaste>  // b.none
+    400801bc:	710080ff 	cmp	w7, #0x20
+    400801c0:	54000180 	b.eq	400801f0 <down2>  // b.none
+    400801c4:	385ff0a7 	ldurb	w7, [x5, #-1]
+    400801c8:	71008cff 	cmp	w7, #0x23
+    400801cc:	54fff560 	b.eq	40080078 <ganaste>  // b.none
+    400801d0:	710080ff 	cmp	w7, #0x20
+    400801d4:	540001a0 	b.eq	40080208 <left2>  // b.none
+    400801d8:	385f00a7 	ldurb	w7, [x5, #-16]
+    400801dc:	71008cff 	cmp	w7, #0x23
+    400801e0:	54fff4c0 	b.eq	40080078 <ganaste>  // b.none
+    400801e4:	97ffff99 	bl	40080048 <arriba>
+    400801e8:	97ffff8f 	bl	40080024 <busca>
+    400801ec:	17ffffb0 	b	400800ac <p0>
+
+00000000400801f0 <down2>:
+    400801f0:	97ffff99 	bl	40080054 <abajo>
+    400801f4:	97ffff8c 	bl	40080024 <busca>
+    400801f8:	17ffffe9 	b	4008019c <p2>
+
+00000000400801fc <right2>:
+    400801fc:	97ffff99 	bl	40080060 <derecha>
+    40080200:	97ffff89 	bl	40080024 <busca>
+    40080204:	14000004 	b	40080214 <p3>
+
+0000000040080208 <left2>:
+    40080208:	97ffff99 	bl	4008006c <izquierda>
+    4008020c:	97ffff86 	bl	40080024 <busca>
+    40080210:	17ffffc5 	b	40080124 <p1>
+
+0000000040080214 <p3>:
+    40080214:	385f00a7 	ldurb	w7, [x5, #-16]
+    40080218:	71008cff 	cmp	w7, #0x23
+    4008021c:	54fff2e0 	b.eq	40080078 <ganaste>  // b.none
+    40080220:	710080ff 	cmp	w7, #0x20
+    40080224:	540002e0 	b.eq	40080280 <up3>  // b.none
+    40080228:	384010a7 	ldurb	w7, [x5, #1]
+    4008022c:	71008cff 	cmp	w7, #0x23
+    40080230:	54fff240 	b.eq	40080078 <ganaste>  // b.none
+    40080234:	710080ff 	cmp	w7, #0x20
+    40080238:	540001e0 	b.eq	40080274 <right3>  // b.none
+    4008023c:	384100a7 	ldurb	w7, [x5, #16]
+    40080240:	71008cff 	cmp	w7, #0x23
+    40080244:	54fff1a0 	b.eq	40080078 <ganaste>  // b.none
+    40080248:	710080ff 	cmp	w7, #0x20
+    4008024c:	540000e0 	b.eq	40080268 <down3>  // b.none
+    40080250:	385ff0a7 	ldurb	w7, [x5, #-1]
+    40080254:	71008cff 	cmp	w7, #0x23
+    40080258:	54fff100 	b.eq	40080078 <ganaste>  // b.none
+    4008025c:	97ffff84 	bl	4008006c <izquierda>
+    40080260:	97ffff71 	bl	40080024 <busca>
+    40080264:	17ffffb0 	b	40080124 <p1>
+
+0000000040080268 <down3>:
+    40080268:	97ffff7b 	bl	40080054 <abajo>
+    4008026c:	97ffff6e 	bl	40080024 <busca>
+    40080270:	17ffffcb 	b	4008019c <p2>
+
+0000000040080274 <right3>:
+    40080274:	97ffff7b 	bl	40080060 <derecha>
+    40080278:	97ffff6b 	bl	40080024 <busca>
+    4008027c:	17ffffe6 	b	40080214 <p3>
+
+0000000040080280 <up3>:
+    40080280:	97ffff72 	bl	40080048 <arriba>
+    40080284:	97ffff68 	bl	40080024 <busca>
+    40080288:	17ffff89 	b	400800ac <p0>
+
+000000004008028c <perdiste>:
+    4008028c:	580001e4 	ldr	x4, 400802c8 <perdiste+0x3c>
+    40080290:	aa0403e6 	mov	x6, x4
+    40080294:	f2e8aa8a 	movk	x10, #0x4554, lsl #48
+    40080298:	f2ca692a 	movk	x10, #0x5349, lsl #32
+    4008029c:	f2a88a4a 	movk	x10, #0x4452, lsl #16
+    400802a0:	f288aa0a 	movk	x10, #0x4550
+    400802a4:	f80000ca 	stur	x10, [x6]
+    400802a8:	f2e4040a 	movk	x10, #0x2020, lsl #48
+    400802ac:	f2c4040a 	movk	x10, #0x2020, lsl #32
+    400802b0:	f2a4050a 	movk	x10, #0x2028, lsl #16
+    400802b4:	f287440a 	movk	x10, #0x3a20
+    400802b8:	f80080ca 	stur	x10, [x6, #8]
+    400802bc:	17ffff59 	b	40080020 <loop>
+    400802c0:	400802d0 	.word	0x400802d0
+    400802c4:	00000000 	.word	0x00000000
+    400802c8:	40080370 	.word	0x40080370
+    400802cc:	00000000 	.word	0x00000000
+
+Desensamblado de la sección .data:
+
+00000000400802d0 <laberinto>:
+    400802d0:	2d2b2d2b 	stp	s11, s11, [x9, #-168]
+    400802d4:	2b2d2d2d 	adds	w13, w9, w13, uxth #3
+    400802d8:	2d2d2d2d 	stp	s13, s11, [x9, #-152]
+    400802dc:	2b2d2d2d 	adds	w13, w9, w13, uxth #3
+    400802e0:	207c587c 	.inst	0x207c587c ; undefined
+    400802e4:	20202020 	.inst	0x20202020 ; undefined
+    400802e8:	2020207c 	.inst	0x2020207c ; undefined
+    400802ec:	7c2d2020 	.inst	0x7c2d2020 ; undefined
+    400802f0:	207c207c 	.inst	0x207c207c ; undefined
+    400802f4:	202b2d2d 	.inst	0x202b2d2d ; undefined
+    400802f8:	2d2b207c 	stp	s28, s8, [x3, #-168]
+    400802fc:	7c20202d 	.inst	0x7c20202d ; undefined
+    40080300:	207c207c 	.inst	0x207c207c ; undefined
+    40080304:	207c2020 	.inst	0x207c2020 ; undefined
+    40080308:	207c207c 	.inst	0x207c207c ; undefined
+    4008030c:	7c202020 	.inst	0x7c202020 ; undefined
+    40080310:	2d2b207c 	stp	s28, s8, [x3, #-168]
+    40080314:	207c202d 	.inst	0x207c202d ; undefined
+    40080318:	207c207c 	.inst	0x207c207c ; undefined
+    4008031c:	2b2d2d20 	adds	w0, w9, w13, uxth #3
+    40080320:	207c207c 	.inst	0x207c207c ; undefined
+    40080324:	207c2020 	.inst	0x207c2020 ; undefined
+    40080328:	207c2020 	.inst	0x207c2020 ; undefined
+    4008032c:	7c232020 	.inst	0x7c232020 ; undefined
+    40080330:	2d2d207c 	stp	s28, s8, [x3, #-152]
+    40080334:	202b2d2d 	.inst	0x202b2d2d ; undefined
+    40080338:	2020207c 	.inst	0x2020207c ; undefined
+    4008033c:	7c2d2d20 	.inst	0x7c2d2d20 ; undefined
+    40080340:	2020207c 	.inst	0x2020207c ; undefined
+    40080344:	20207c20 	.inst	0x20207c20 ; undefined
+    40080348:	2d2d207c 	stp	s28, s8, [x3, #-152]
+    4008034c:	7c2d2d2d 	.inst	0x7c2d2d2d ; undefined
+    40080350:	7c20207c 	.inst	0x7c20207c ; undefined
+    40080354:	7c202020 	.inst	0x7c202020 ; undefined
+    40080358:	20207c20 	.inst	0x20207c20 ; undefined
+    4008035c:	7c202020 	.inst	0x7c202020 ; undefined
+    40080360:	2d2d2d2b 	stp	s11, s11, [x9, #-152]
+    40080364:	2d2b2d2d 	stp	s13, s11, [x9, #-168]
+    40080368:	2d2b2d2d 	stp	s13, s11, [x9, #-168]
+    4008036c:	2b2d2d2d 	adds	w13, w9, w13, uxth #3
+
+0000000040080370 <estado>:
+    40080370:	4745554a 	.inst	0x4745554a ; undefined
+    40080374:	4e45204f 	.inst	0x4e45204f ; undefined
+    40080378:	52554320 	.inst	0x52554320 ; undefined
+    4008037c:	21214f53 	.inst	0x21214f53 ; undefined
+
+0000000040080380 <_stack_ptr>:
+    40080380:	00400000 	.inst	0x00400000 ; undefined
+    40080384:	00000000 	.inst	0x00000000 ; undefined
+
+Desensamblado de la sección .debug_line:
+
+0000000000000000 <.debug_line>:
+   0:	000000e5 	.inst	0x000000e5 ; undefined
+   4:	001d0002 	.inst	0x001d0002 ; undefined
+   8:	01040000 	.inst	0x01040000 ; undefined
+   c:	000d0efb 	.inst	0x000d0efb ; undefined
+  10:	01010101 	.inst	0x01010101 ; undefined
+  14:	01000000 	.inst	0x01000000 ; undefined
+  18:	00010000 	.inst	0x00010000 ; undefined
+  1c:	6e69616d 	rsubhn2	v13.8h, v11.4s, v9.4s
+  20:	0000732e 	.inst	0x0000732e ; undefined
+  24:	00000000 	.inst	0x00000000 ; undefined
+  28:	00000209 	.inst	0x00000209 ; undefined
+  2c:	00004008 	.inst	0x00004008 ; undefined
+  30:	21180000 	.inst	0x21180000 ; undefined
+  34:	22222123 	.inst	0x22222123 ; undefined
+  38:	26212121 	.inst	0x26212121 ; undefined
+  3c:	21212121 	.inst	0x21212121 ; undefined
+  40:	21212121 	.inst	0x21212121 ; undefined
+  44:	22212125 	.inst	0x22212125 ; undefined
+  48:	21222121 	.inst	0x21222121 ; undefined
+  4c:	21212221 	.inst	0x21212221 ; undefined
+  50:	21212123 	.inst	0x21212123 ; undefined
+  54:	21212121 	.inst	0x21212121 ; undefined
+  58:	21212121 	.inst	0x21212121 ; undefined
+  5c:	200d0321 	.inst	0x200d0321 ; undefined
+  60:	21212121 	.inst	0x21212121 ; undefined
+  64:	21212121 	.inst	0x21212121 ; undefined
+  68:	21212121 	.inst	0x21212121 ; undefined
+  6c:	21212121 	.inst	0x21212121 ; undefined
+  70:	21212121 	.inst	0x21212121 ; undefined
+  74:	21212121 	.inst	0x21212121 ; undefined
+  78:	21212121 	.inst	0x21212121 ; undefined
+  7c:	21212221 	.inst	0x21212221 ; undefined
+  80:	21212121 	.inst	0x21212121 ; undefined
+  84:	21212121 	.inst	0x21212121 ; undefined
+  88:	21212121 	.inst	0x21212121 ; undefined
+  8c:	21212121 	.inst	0x21212121 ; undefined
+  90:	21212121 	.inst	0x21212121 ; undefined
+  94:	21212121 	.inst	0x21212121 ; undefined
+  98:	22212121 	.inst	0x22212121 ; undefined
+  9c:	21212121 	.inst	0x21212121 ; undefined
+  a0:	21212121 	.inst	0x21212121 ; undefined
+  a4:	21212121 	.inst	0x21212121 ; undefined
+  a8:	21212121 	.inst	0x21212121 ; undefined
+  ac:	21212121 	.inst	0x21212121 ; undefined
+  b0:	21212121 	.inst	0x21212121 ; undefined
+  b4:	21212121 	.inst	0x21212121 ; undefined
+  b8:	21212221 	.inst	0x21212221 ; undefined
+  bc:	21212121 	.inst	0x21212121 ; undefined
+  c0:	21212121 	.inst	0x21212121 ; undefined
+  c4:	21212121 	.inst	0x21212121 ; undefined
+  c8:	21212121 	.inst	0x21212121 ; undefined
+  cc:	21212121 	.inst	0x21212121 ; undefined
+  d0:	21212121 	.inst	0x21212121 ; undefined
+  d4:	26212121 	.inst	0x26212121 ; undefined
+  d8:	21212121 	.inst	0x21212121 ; undefined
+  dc:	21212121 	.inst	0x21212121 ; undefined
+  e0:	21212121 	.inst	0x21212121 ; undefined
+  e4:	01000502 	.inst	0x01000502 ; undefined
+  e8:	La dirección 0x00000000000000e8 está fuera de los límites.
+
+
+Desensamblado de la sección .debug_info:
+
+0000000000000000 <.debug_info>:
+   0:	0000002a 	.inst	0x0000002a ; undefined
+   4:	00000002 	.inst	0x00000002 ; undefined
+   8:	01080000 	.inst	0x01080000 ; undefined
+   c:	00000000 	.inst	0x00000000 ; undefined
+  10:	40080000 	.inst	0x40080000 ; undefined
+  14:	00000000 	.inst	0x00000000 ; undefined
+  18:	400802d0 	.inst	0x400802d0 ; undefined
+	...
+  24:	00000007 	.inst	0x00000007 ; undefined
+  28:	00000043 	.inst	0x00000043 ; undefined
+  2c:	La dirección 0x000000000000002c está fuera de los límites.
+
+
+Desensamblado de la sección .debug_abbrev:
+
+0000000000000000 <.debug_abbrev>:
+   0:	10001101 	adr	x1, 220 <_stack_end-0x3ffde0>
+   4:	12011106 	and	w6, w8, #0x8000000f
+   8:	1b0e0301 	madd	w1, w24, w14, w0
+   c:	130e250e 	sbfiz	w14, w8, #18, #10
+  10:	00000005 	.inst	0x00000005 ; undefined
+
+Desensamblado de la sección .debug_aranges:
+
+0000000000000000 <.debug_aranges>:
+   0:	0000002c 	.inst	0x0000002c ; undefined
+   4:	00000002 	.inst	0x00000002 ; undefined
+   8:	00080000 	.inst	0x00080000 ; undefined
+   c:	00000000 	.inst	0x00000000 ; undefined
+  10:	40080000 	.inst	0x40080000 ; undefined
+  14:	00000000 	.inst	0x00000000 ; undefined
+  18:	000002d0 	.inst	0x000002d0 ; undefined
+	...
+
+Desensamblado de la sección .debug_str:
+
+0000000000000000 <.debug_str>:
+   0:	6e69616d 	rsubhn2	v13.8h, v11.4s, v9.4s
+   4:	2f00732e 	.inst	0x2f00732e ; undefined
+   8:	656d6f68 	fnmls	z8.h, p3/m, z27.h, z13.h
+   c:	656c612f 	fnmls	z15.h, p0/m, z9.h, z12.h
+  10:	6361462f 	.inst	0x6361462f ; undefined
+  14:	724f2f75 	.inst	0x724f2f75 ; undefined
+  18:	4c2f6167 	.inst	0x4c2f6167 ; undefined
+  1c:	726f6261 	.inst	0x726f6261 ; undefined
+  20:	726f7461 	.inst	0x726f7461 ; undefined
+  24:	535f6f69 	.inst	0x535f6f69 ; undefined
+  28:	61746970 	.inst	0x61746970 ; undefined
+  2c:	415f656c 	.inst	0x415f656c ; undefined
+  30:	616a656c 	.inst	0x616a656c ; undefined
+  34:	6f72646e 	sqshlu	v14.2d, v3.2d, #50
+  38:	62614c2f 	.inst	0x62614c2f ; undefined
+  3c:	6e697265 	uabdl2	v5.4s, v19.8h, v9.8h
+  40:	47006f74 	.inst	0x47006f74 ; undefined
+  44:	4120554e 	.inst	0x4120554e ; undefined
+  48:	2e322053 	usubl	v19.8h, v2.8b, v18.8b
+  4c:	La dirección 0x000000000000004c está fuera de los límites.
+
