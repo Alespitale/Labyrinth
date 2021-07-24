@@ -22,3 +22,5 @@ b 52
 b 67
 continue
 Luego presionar "enter" repetidas veces hasta llegar al tesoro #.
+
+## Materia: Organizacion del computador
